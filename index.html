@@ -74,24 +74,22 @@
     /* ---------- 共用容器 ---------- */
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 
-    /* ---------- 個人資料區（頂部重要資訊）---------- */
-    header.profile {
-      text-align: center;
-      padding: 60px 24px 30px;
-    }
+    /* ---------- 個人資料區（頂部重要資訊：照片在左、資訊在右）---------- */
+    header.profile { padding: 52px 24px 30px; }
+    .profile-row { display: flex; gap: 32px; align-items: flex-start; }
+    .profile-info { flex: 1; min-width: 0; }
     /* 想放真實照片：把下面 <div class="avatar">YW</div> 整行換成
        <img class="avatar" src="avatar.jpg" alt="Yi-Chieh Wang" />
        並把 avatar.jpg 放到跟 index.html 同一個資料夾。 */
     .avatar {
-      width: 150px; height: 150px;
-      border-radius: 50%;
+      width: 160px; height: 160px; flex-shrink: 0;
+      border-radius: 18px;            /* 圓角方形（跟 luomai 一樣；想要圓形改成 50%）*/
       object-fit: cover;
-      margin: 0 auto 22px;
       display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #0b0e14; font-size: 52px; font-weight: 700; letter-spacing: 1px;
+      color: #0b0e14; font-size: 56px; font-weight: 700; letter-spacing: 1px;
       border: 1px solid rgba(255,255,255,0.10);
-      box-shadow: 0 0 0 6px rgba(56,189,248,0.06), 0 12px 40px rgba(56,189,248,0.25);
+      box-shadow: 0 0 0 6px rgba(56,189,248,0.06), 0 12px 40px rgba(56,189,248,0.22);
     }
     header.profile h1 {
       font-size: 34px; margin: 0 0 8px; font-weight: 800; letter-spacing: .3px;
@@ -101,15 +99,15 @@
     header.profile .position { font-size: 17px; color: var(--text); margin: 4px 0; }
     header.profile .affil { font-size: 15px; color: var(--muted); margin: 4px 0; }
 
-    .links { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; font-size: 14.5px; }
+    .links { margin-top: 16px; display: flex; gap: 10px; justify-content: flex-start; flex-wrap: wrap; font-size: 14.5px; }
     .links a {
       padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px;
       color: var(--text); background: var(--bg-soft); transition: all .15s;
     }
     .links a:hover { border-color: var(--accent); color: var(--accent); opacity: 1; text-decoration: none; }
 
-    /* 頂部簡介短文 */
-    .lead { max-width: 660px; margin: 22px auto 0; color: var(--text-soft); font-size: 16px; text-align: left; }
+    /* 頂部簡介短文（在右欄，靠左）*/
+    .lead { margin: 16px 0 0; color: var(--text-soft); font-size: 16px; line-height: 1.7; }
     .lead b { color: var(--text); }
 
     /* ---------- 區塊標題 ---------- */
@@ -180,11 +178,15 @@
     footer { text-align: center; color: var(--muted); font-size: 13px; padding: 38px 24px 48px; border-top: 1px solid var(--line); }
 
     /* ---------- 手機版調整 ---------- */
+    @media (max-width: 640px) {
+      /* 手機：照片改回上方、資訊在下方堆疊 */
+      .profile-row { flex-direction: column; gap: 20px; align-items: flex-start; }
+      .avatar { width: 120px; height: 120px; font-size: 44px; }
+    }
     @media (max-width: 600px) {
       .interests, .projects { grid-template-columns: 1fr; }
       .entry .date { width: 100%; }
       .skills .label { min-width: 0; display: block; }
-      .lead { text-align: left; }
     }
   </style>
 </head>
@@ -209,23 +211,27 @@
        頂部重要資訊（照片 + 名字 + 頭銜 + 連結 + 簡介）
        ============================================================ -->
   <header class="profile">
-    <div class="avatar">YW</div>
-    <h1>Yi-Chieh Wang</h1>
-    <p class="position">PhD Student · Networks &amp; Systems for AI</p>
-    <p class="affil">ICSA, School of Informatics, University of Edinburgh</p>
-    <p class="affil">Edinburgh, United Kingdom</p>
-    <div class="links">
-      <a href="mailto:Mike.Wang@ed.ac.uk">Email</a>
-      <a href="https://www.linkedin.com/in/yichieh-wang-a3b60817b" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/yichieh-wang" target="_blank" rel="noopener">GitHub</a>
+    <div class="profile-row">
+      <div class="avatar">YW</div>
+      <div class="profile-info">
+        <h1>Yi-Chieh Wang</h1>
+        <p class="position">PhD Student · Networks &amp; Systems for AI</p>
+        <p class="affil">ICSA, School of Informatics, University of Edinburgh</p>
+        <p class="affil">Edinburgh, United Kingdom</p>
+        <div class="links">
+          <a href="mailto:Mike.Wang@ed.ac.uk">Email</a>
+          <a href="https://www.linkedin.com/in/yichieh-wang-a3b60817b" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/yichieh-wang" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p class="lead">
+          I am a PhD student in Informatics at the University of Edinburgh, working on
+          <b>networks and systems for AI</b> — defect-aware network-on-chip (NoC) architectures,
+          network simulation for distributed AI, and system software for wafer-scale accelerators.
+          Before my PhD I spent several years in the semiconductor industry at <b>Cadence</b> and
+          <b>TSMC</b>, working on advanced process nodes, EDA tooling, and computational lithography.
+        </p>
+      </div>
     </div>
-    <p class="lead">
-      I am a PhD student in Informatics at the University of Edinburgh, working on
-      <b>networks and systems for AI</b> — defect-aware network-on-chip (NoC) architectures,
-      network simulation for distributed AI, and system software for wafer-scale accelerators.
-      Before my PhD I spent several years in the semiconductor industry at <b>Cadence</b> and
-      <b>TSMC</b>, working on advanced process nodes, EDA tooling, and computational lithography.
-    </p>
   </header>
 
   <div class="container">
