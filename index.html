@@ -12,11 +12,14 @@
        ============================================================ -->
   <style>
     :root {
-      --accent: #b1283a;          /* 主色（連結、強調）。想換色改這裡，例如 #2563eb 藍色 */
-      --text: #1a1a1a;
-      --muted: #666;
-      --line: #e5e5e5;
-      --bg: #ffffff;
+      --accent:  #38bdf8;         /* 主色（青藍）。想換色改這裡，例如 #a78bfa 紫、#34d399 綠 */
+      --accent2: #818cf8;         /* 漸層第二色（靛紫），用在名字與頭像 */
+      --text:      #e6e9ef;       /* 主要文字（亮） */
+      --text-soft: #c2c9d6;       /* 內文清單文字 */
+      --muted:     #8a94a7;       /* 次要文字（日期、單位） */
+      --line:      #222936;       /* 分隔線、邊框 */
+      --bg:        #0b0e14;       /* 深底色 */
+      --bg-soft:   #121826;       /* 卡片底色 */
       --max: 820px;               /* 內容最大寬度 */
     }
 
@@ -29,20 +32,29 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
                    "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
       color: var(--text);
-      background: var(--bg);
+      /* 頂部一抹青藍光暈，營造科技感 */
+      background:
+        radial-gradient(1100px 560px at 50% -8%, rgba(56,189,248,0.12), transparent 70%),
+        radial-gradient(900px 500px at 100% 0%, rgba(129,140,248,0.08), transparent 65%),
+        var(--bg);
+      background-attachment: fixed;
       line-height: 1.65;
       font-size: 16px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    ::selection { background: rgba(56,189,248,0.30); color: #fff; }
+
+    a { color: var(--accent); text-decoration: none; transition: opacity .15s; }
+    a:hover { text-decoration: underline; opacity: .85; }
 
     /* ---------- 頂部導覽列 ---------- */
     nav {
       position: sticky;
       top: 0;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(6px);
+      background: rgba(11, 14, 20, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
       z-index: 10;
     }
@@ -52,12 +64,12 @@
       padding: 14px 24px;
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 22px;
       justify-content: center;
       font-size: 15px;
     }
-    nav a { color: var(--text); }
-    nav a:hover { color: var(--accent); text-decoration: none; }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--accent); text-decoration: none; opacity: 1; }
 
     /* ---------- 共用容器 ---------- */
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
@@ -65,65 +77,85 @@
     /* ---------- 個人資料區 ---------- */
     header.profile {
       text-align: center;
-      padding: 56px 24px 32px;
+      padding: 60px 24px 34px;
     }
     .avatar {
       width: 150px; height: 150px;
       border-radius: 50%;
       object-fit: cover;
-      margin: 0 auto 20px;
+      margin: 0 auto 22px;
       display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, var(--accent), #7a1726);
-      color: #fff; font-size: 52px; font-weight: 600; letter-spacing: 1px;
-      border: 4px solid #fff;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0b0e14; font-size: 52px; font-weight: 700; letter-spacing: 1px;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 0 0 6px rgba(56,189,248,0.06), 0 12px 40px rgba(56,189,248,0.25);
     }
-    header.profile h1 { font-size: 32px; margin: 0 0 6px; font-weight: 700; }
+    header.profile h1 {
+      font-size: 34px; margin: 0 0 8px; font-weight: 800; letter-spacing: .3px;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
     header.profile .position { font-size: 17px; color: var(--text); margin: 4px 0; }
     header.profile .affil { font-size: 15px; color: var(--muted); margin: 4px 0; }
 
-    .links { margin-top: 16px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; font-size: 15px; }
+    .links { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; font-size: 14.5px; }
+    /* 連結做成小膠囊按鈕 */
+    .links a {
+      padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px;
+      color: var(--text); background: var(--bg-soft); transition: all .15s;
+    }
+    .links a:hover { border-color: var(--accent); color: var(--accent); opacity: 1; text-decoration: none; }
 
     /* ---------- 區塊標題 ---------- */
-    section { padding: 28px 0; border-top: 1px solid var(--line); }
+    section { padding: 30px 0; border-top: 1px solid var(--line); }
     section h2 {
-      font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+      font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
       color: var(--accent); margin: 0 0 18px; font-weight: 700;
     }
 
-    .bio { font-size: 16.5px; }
+    .bio { font-size: 16.5px; color: var(--text-soft); }
 
     /* ---------- 條目（學歷 / 經歷 / 論文） ---------- */
     .entry { margin-bottom: 22px; }
     .entry:last-child { margin-bottom: 0; }
     .entry .row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .entry .title { font-weight: 600; }
+    .entry .title { font-weight: 600; color: var(--text); }
     .entry .org { color: var(--text); }
     .entry .date { color: var(--muted); font-size: 14px; white-space: nowrap; }
     .entry .place { color: var(--muted); font-size: 14px; }
-    .entry ul { margin: 8px 0 0; padding-left: 20px; color: #333; }
+    .entry ul { margin: 8px 0 0; padding-left: 20px; color: var(--text-soft); }
     .entry ul li { margin-bottom: 4px; }
+    .entry b { color: var(--text); }
 
     /* ---------- 研究方向卡片 ---------- */
     .interests { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .interests .card { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
-    .interests .card h3 { margin: 0 0 8px; font-size: 15px; }
-    .interests .card ul { margin: 0; padding-left: 18px; font-size: 14.5px; color: #444; }
+    .interests .card {
+      border: 1px solid var(--line); background: var(--bg-soft);
+      border-radius: 12px; padding: 16px 18px;
+      transition: border-color .15s, transform .15s, box-shadow .15s;
+    }
+    .interests .card:hover {
+      border-color: var(--accent); transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(56,189,248,0.10);
+    }
+    .interests .card h3 { margin: 0 0 8px; font-size: 15px; color: var(--text); }
+    .interests .card ul { margin: 0; padding-left: 18px; font-size: 14.5px; color: var(--text-soft); }
 
     /* ---------- 論文 ---------- */
     .pub { margin-bottom: 16px; }
     .pub .venue { display: inline-block; font-size: 12px; font-weight: 700; color: var(--accent);
-                  border: 1px solid var(--accent); border-radius: 4px; padding: 1px 7px; margin-right: 6px; }
-    .pub .ptitle { font-weight: 600; }
+                  border: 1px solid rgba(56,189,248,0.40); background: rgba(56,189,248,0.08);
+                  border-radius: 5px; padding: 1px 8px; margin-right: 6px; }
+    .pub .ptitle { font-weight: 600; color: var(--text); }
     .pub .authors { font-size: 14.5px; color: var(--muted); }
-    .pub .me { color: var(--text); font-weight: 600; }
+    .pub .me { color: var(--accent); font-weight: 600; }
 
     /* ---------- 技能 ---------- */
-    .skills .skillrow { margin-bottom: 10px; }
-    .skills .label { font-weight: 600; display: inline-block; min-width: 230px; }
+    .skills .skillrow { margin-bottom: 10px; color: var(--text-soft); }
+    .skills .label { font-weight: 600; display: inline-block; min-width: 230px; color: var(--text); }
 
     /* ---------- 頁尾 ---------- */
-    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 36px 24px 48px; border-top: 1px solid var(--line); }
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 38px 24px 48px; border-top: 1px solid var(--line); }
 
     /* ---------- 手機版調整 ---------- */
     @media (max-width: 600px) {
