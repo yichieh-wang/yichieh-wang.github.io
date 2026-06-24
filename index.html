@@ -75,7 +75,8 @@
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 
     /* ---------- 個人資料區（頂部重要資訊：照片在左、資訊在右）---------- */
-    header.profile { padding: 52px 24px 30px; }
+    /* max-width 跟 .container 一致，讓頂部和下面 section 對齊、不會上寬下窄 */
+    header.profile { padding: 52px 24px 30px; max-width: var(--max); margin: 0 auto; }
     .profile-row { display: flex; gap: 32px; align-items: flex-start; }
     .profile-info { flex: 1; min-width: 0; }
     /* 想放真實照片：把下面 <div class="avatar">YW</div> 整行換成
@@ -108,6 +109,8 @@
 
     /* 頂部簡介短文（在右欄，靠左）*/
     .lead { margin: 16px 0 0; color: var(--text-soft); font-size: 16px; line-height: 1.7; }
+    .lead p { margin: 0 0 12px; }
+    .lead p:last-child { margin-bottom: 0; }
     .lead b { color: var(--text); }
 
     /* ---------- 區塊標題 ---------- */
@@ -223,13 +226,20 @@
           <a href="https://www.linkedin.com/in/yichieh-wang-a3b60817b" target="_blank" rel="noopener">LinkedIn</a>
           <a href="https://github.com/yichieh-wang" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <p class="lead">
-          I am a PhD student in Informatics at the University of Edinburgh, working on
-          <b>networks and systems for AI</b> — defect-aware network-on-chip (NoC) architectures,
-          network simulation for distributed AI, and system software for wafer-scale accelerators.
-          Before my PhD I spent several years in the semiconductor industry at <b>Cadence</b> and
-          <b>TSMC</b>, working on advanced process nodes, EDA tooling, and computational lithography.
-        </p>
+        <div class="lead">
+          <p>
+            I am a PhD student in Informatics at the University of Edinburgh, working on
+            <b>networks and systems for AI</b> — defect-aware network-on-chip (NoC) architectures,
+            network simulation for distributed AI, and system software for wafer-scale accelerators.
+          </p>
+          <p>
+            Before my PhD, I spent over four years in the semiconductor industry. At
+            <b>Cadence Design Systems</b> I led PDK and ML-assisted Techfile development for TSMC's
+            advanced nodes (N5/N3); earlier, at <b>TSMC</b>, I developed ML-assisted OPC recipes for
+            computational lithography. That hardware background continues to shape how I approach
+            <b>hardware–software co-design</b> for AI systems.
+          </p>
+        </div>
       </div>
     </div>
   </header>
