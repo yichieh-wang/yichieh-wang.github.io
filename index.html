@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yi-Chieh Wang</title>
+  <meta name="description" content="Yi-Chieh Wang — PhD Student, Networks & Systems for AI, University of Edinburgh" />
+
+  <!-- ============================================================
+       樣式 (CSS)：整個網站的外觀都寫在這裡。
+       想換顏色，改下面 --accent 那行的色碼就好。
+       ============================================================ -->
+  <style>
+    :root {
+      --accent: #b1283a;          /* 主色（連結、強調）。想換色改這裡，例如 #2563eb 藍色 */
+      --text: #1a1a1a;
+      --muted: #666;
+      --line: #e5e5e5;
+      --bg: #ffffff;
+      --max: 820px;               /* 內容最大寬度 */
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+                   "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ---------- 頂部導覽列 ---------- */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--line);
+      z-index: 10;
+    }
+    nav .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      font-size: 15px;
+    }
+    nav a { color: var(--text); }
+    nav a:hover { color: var(--accent); text-decoration: none; }
+
+    /* ---------- 共用容器 ---------- */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- 個人資料區 ---------- */
+    header.profile {
+      text-align: center;
+      padding: 56px 24px 32px;
+    }
+    .avatar {
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--accent), #7a1726);
+      color: #fff; font-size: 52px; font-weight: 600; letter-spacing: 1px;
+      border: 4px solid #fff;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+    header.profile h1 { font-size: 32px; margin: 0 0 6px; font-weight: 700; }
+    header.profile .position { font-size: 17px; color: var(--text); margin: 4px 0; }
+    header.profile .affil { font-size: 15px; color: var(--muted); margin: 4px 0; }
+
+    .links { margin-top: 16px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; font-size: 15px; }
+
+    /* ---------- 區塊標題 ---------- */
+    section { padding: 28px 0; border-top: 1px solid var(--line); }
+    section h2 {
+      font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--accent); margin: 0 0 18px; font-weight: 700;
+    }
+
+    .bio { font-size: 16.5px; }
+
+    /* ---------- 條目（學歷 / 經歷 / 論文） ---------- */
+    .entry { margin-bottom: 22px; }
+    .entry:last-child { margin-bottom: 0; }
+    .entry .row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .entry .title { font-weight: 600; }
+    .entry .org { color: var(--text); }
+    .entry .date { color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .entry .place { color: var(--muted); font-size: 14px; }
+    .entry ul { margin: 8px 0 0; padding-left: 20px; color: #333; }
+    .entry ul li { margin-bottom: 4px; }
+
+    /* ---------- 研究方向卡片 ---------- */
+    .interests { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .interests .card { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+    .interests .card h3 { margin: 0 0 8px; font-size: 15px; }
+    .interests .card ul { margin: 0; padding-left: 18px; font-size: 14.5px; color: #444; }
+
+    /* ---------- 論文 ---------- */
+    .pub { margin-bottom: 16px; }
+    .pub .venue { display: inline-block; font-size: 12px; font-weight: 700; color: var(--accent);
+                  border: 1px solid var(--accent); border-radius: 4px; padding: 1px 7px; margin-right: 6px; }
+    .pub .ptitle { font-weight: 600; }
+    .pub .authors { font-size: 14.5px; color: var(--muted); }
+    .pub .me { color: var(--text); font-weight: 600; }
+
+    /* ---------- 技能 ---------- */
+    .skills .skillrow { margin-bottom: 10px; }
+    .skills .label { font-weight: 600; display: inline-block; min-width: 230px; }
+
+    /* ---------- 頁尾 ---------- */
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 36px 24px 48px; border-top: 1px solid var(--line); }
+
+    /* ---------- 手機版調整 ---------- */
+    @media (max-width: 600px) {
+      .interests { grid-template-columns: 1fr; }
+      .entry .date { width: 100%; }
+      .skills .label { min-width: 0; display: block; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       導覽列：點了會跳到對應區塊
+       ============================================================ -->
+  <nav>
+    <div class="inner">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Experience</a>
+      <a href="#publications">Publications</a>
+      <a href="#skills">Skills</a>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       個人資料區
+       想放真實照片：把下面 <div class="avatar">YW</div> 整行換成
+       <img class="avatar" src="avatar.jpg" alt="Yi-Chieh Wang" />
+       並把 avatar.jpg 圖片檔放到跟這個 index.html 同一個資料夾。
+       ============================================================ -->
+  <header class="profile">
+    <div class="avatar">YW</div>
+    <h1>Yi-Chieh Wang</h1>
+    <p class="position">PhD Student · Networks &amp; Systems for AI</p>
+    <p class="affil">ICSA, School of Informatics, University of Edinburgh</p>
+    <p class="affil">Edinburgh, United Kingdom</p>
+    <div class="links">
+      <a href="mailto:Mike.Wang@ed.ac.uk">Email</a>
+      <a href="https://www.linkedin.com/in/yichieh-wang-a3b60817b" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/mikebo93" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/mikebo93/Resume/blob/main/MSRA/main.tex" target="_blank" rel="noopener">CV</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ---------- About ---------- -->
+    <section id="about">
+      <h2>About</h2>
+      <p class="bio">
+        I am a PhD student in Informatics at the University of Edinburgh (ICSA, School of Informatics),
+        working on networks and systems for AI. My research spans defect-aware network-on-chip (NoC)
+        architectures, network simulation for distributed AI workloads, and interconnect design and
+        system software for wafer-scale AI accelerators. Before my PhD, I spent several years in the
+        semiconductor industry at Cadence Design Systems and TSMC, working on advanced process nodes,
+        EDA tooling, and computational lithography.
+      </p>
+    </section>
+
+    <!-- ---------- Research Interests ---------- -->
+    <section id="research">
+      <h2>Research Interests</h2>
+      <div class="interests">
+        <div class="card">
+          <h3>Networks for AI Systems</h3>
+          <ul>
+            <li>Defect-aware network-on-chip (NoC) architectures</li>
+            <li>Network simulation for distributed AI workloads</li>
+            <li>Interconnect design for wafer-scale AI accelerators</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>AI Accelerator Architecture</h3>
+          <ul>
+            <li>Hardware–software co-design for AI-oriented systems</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>System Software for AI</h3>
+          <ul>
+            <li>Compiler for wafer-scale mesh AI accelerators</li>
+            <li>System modeling for large-scale AI workloads</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- Education ---------- -->
+    <section id="education">
+      <h2>Education</h2>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">PhD in Informatics — University of Edinburgh</span>
+          <span class="date">Jan. 2025 – Present</span>
+        </div>
+        <div class="place">ICSA, School of Informatics · Edinburgh, UK</div>
+        <ul>
+          <li>Built <b>two NoC simulators in Rust</b> for defect-aware routing research: an event-driven
+              cycle-accurate simulator (topology-agnostic, VC flow control, custom arbitration &amp; switch
+              allocation) and a flow-based analytical simulator for wafer-scale design-space exploration.</li>
+          <li>Contributed a <b>Gaussian-Process-based communication cost model</b> to SysSim, reducing
+              latency-prediction error versus the prior linear baseline.</li>
+          <li>Developed performance models for automatic kernel offloading in LLM training.</li>
+          <li>Awarded the <b>ISCA 2025 Student Travel Grant</b>.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">MEng in Mechatronics (With Distinction) — University of Melbourne</span>
+          <span class="date">Feb. 2018 – Jul. 2020</span>
+        </div>
+        <div class="place">Melbourne, Australia</div>
+      </div>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">BSc in Physics — National Taiwan University</span>
+          <span class="date">Aug. 2012 – Jun. 2016</span>
+        </div>
+        <div class="place">Taipei, Taiwan</div>
+      </div>
+    </section>
+
+    <!-- ---------- Experience ---------- -->
+    <section id="experience">
+      <h2>Experience</h2>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">Lead Product Engineer — Cadence Design Systems</span>
+          <span class="date">May 2023 – Dec. 2024</span>
+        </div>
+        <div class="place">Hsinchu City, Taiwan</div>
+        <ul>
+          <li>Led PDK feature development and <b>ML-assisted</b> Techfile analysis for
+              <b>TSMC advanced process nodes (N5/N3)</b>.</li>
+          <li>Implemented a parser covering <b>80%</b> of TSMC design rules in the PDK Techfile and
+              completed <b>100% critical Techfile constraint</b> auto-generation and verification.</li>
+          <li>Accelerated Techfile development by <b>1.5×</b> via automatic design-rule-to-constraint conversion.</li>
+          <li>Lead lecturer for a company-wide Machine Learning seminar; built an HMM-based NL parser for
+              TSMC DRM parameter extraction.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">Senior Product Engineer — Cadence Design Systems</span>
+          <span class="date">May 2021 – May 2023</span>
+        </div>
+        <div class="place">Hsinchu City, Taiwan</div>
+        <ul>
+          <li>Led PDK feature development and support for <b>TSMC advanced process nodes</b>.</li>
+          <li>Completed <b>Techfile auto-verification</b>, reducing QA time by 80%.</li>
+          <li>Awarded a <b>3-year RSU grant</b> in 2022 for automating the PDK QA flow.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">OPC Engineer — TSMC</span>
+          <span class="date">Aug. 2020 – May 2021</span>
+        </div>
+        <div class="place">Hsinchu City, Taiwan</div>
+        <ul>
+          <li>Optimized OPC recipes for the <b>TSMC N7 process node</b>, improving memory usage by <b>30%</b>.</li>
+          <li>Developed <b>ML-assisted</b> OPC recipes in collaboration with ASML; QA of OPC results for BEOL.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="row">
+          <span class="title">Research Intern — Lockheed Martin Flight Lab</span>
+          <span class="date">Jul. 2019 – Jun. 2020</span>
+        </div>
+        <div class="place">Melbourne, Australia</div>
+        <ul>
+          <li>Conducted research on morphing quadrotor structures and controllers.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ---------- Publications ---------- -->
+    <section id="publications">
+      <h2>Publications</h2>
+
+      <div class="pub">
+        <span class="venue">ASPLOS '26</span>
+        <span class="ptitle">DLR: Efficient Defect-Tolerant Routing at Wafer Scale</span>
+        <div class="authors"><span class="me">Yi-Chieh Wang</span>, Congjie He, Haocheng Xiao, Boris Grot, Luo Mai &nbsp;<i>(under submission)</i></div>
+      </div>
+
+      <div class="pub">
+        <span class="venue">SOSP '26</span>
+        <span class="ptitle">Wavel: A Fast and Efficient Compilation System for Wafer-Scale Accelerators</span>
+        <div class="authors">Yeqi Huang, Congjie He, Haocheng Xiao, Yanwei Ye, <span class="me">Yi-Chieh Wang</span>, et al. &nbsp;<i>(under submission)</i></div>
+      </div>
+
+      <div class="pub">
+        <span class="venue">USENIX ;login:</span>
+        <span class="ptitle">Wafer-Scale AI Compute: A System Software Perspective</span>
+        <div class="authors">Congjie He, Yeqi Huang, Pei Mu, <span class="me">Yi-Chieh Wang</span>, et al. &nbsp;<span class="date">2025</span></div>
+      </div>
+
+      <div class="pub">
+        <span class="venue">Cadence IC</span>
+        <span class="ptitle">Analytical Model of DRM</span>
+        <div class="authors"><span class="me">Yi-Chieh Wang</span>, Min-Yi Fang &nbsp;<span class="date">2023</span></div>
+      </div>
+
+      <div class="pub">
+        <span class="venue">Cadence IC</span>
+        <span class="ptitle">A Generic Method to Constraint Decomposition and Test Pattern Synthesis</span>
+        <div class="authors"><span class="me">Yi-Chieh Wang</span>, Min-Yi Fang, Chia-Chiang Chin &nbsp;<span class="date">2022</span></div>
+      </div>
+    </section>
+
+    <!-- ---------- Skills ---------- -->
+    <section id="skills" class="skills">
+      <h2>Technical Skills</h2>
+      <div class="skillrow"><span class="label">Programming</span> Rust, Cadence SKILL, Siemens Calibre (SVRF/TVF), Python, C++</div>
+      <div class="skillrow"><span class="label">Network Simulation &amp; Modeling</span> NoC simulators in Rust, LogGP/LogP latency modeling, Gaussian-Process regression, collective algorithms (AllReduce, AllGather, Broadcast)</div>
+      <div class="skillrow"><span class="label">EDA Tools</span> Cadence Virtuoso, Cadence Pegasus, Siemens Calibre OPC, Synopsys Proteus WorkBench</div>
+      <div class="skillrow"><span class="label">Semiconductor Process</span> TSMC Advanced Nodes (N16–A16), PDK, PCell, Techfile, Guard Ring, DTCO</div>
+      <div class="skillrow"><span class="label">Computational Lithography</span> Optical Proximity Correction (OPC) for mature and advanced nodes</div>
+    </section>
+
+    <!-- ---------- Academic Service ---------- -->
+    <section id="service">
+      <h2>Academic Service</h2>
+      <div class="entry">
+        <div class="row">
+          <span class="title">Web Chair — EuroSys 2026</span>
+          <span class="date">2026</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    © 2026 Yi-Chieh Wang · Built with plain HTML &amp; CSS · Hosted on GitHub Pages
+  </footer>
+
+</body>
+</html>
