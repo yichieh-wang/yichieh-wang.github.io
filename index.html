@@ -6,6 +6,17 @@
   <title>Yi-Chieh Wang</title>
   <meta name="description" content="Yi-Chieh Wang — PhD Student, Networks & Systems for AI, University of Edinburgh" />
 
+  <!-- 載入前先決定明暗主題：存過就用存的，否則跟隨訪客的系統設定（避免畫面閃一下）-->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var sysLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.setAttribute('data-theme', saved || (sysLight ? 'light' : 'dark'));
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
+
   <!-- ============================================================
        樣式 (CSS)：整個網站的外觀都寫在這裡。
        想換主色，改下面 --accent / --accent2 那兩行的色碼就好。
@@ -22,6 +33,28 @@
       --bg-soft:   #121826;       /* 卡片底色 */
       --max: 1152px;              /* 內容最大寬度（約等於 luomai 的 max-w-6xl）*/
     }
+
+    /* ---------- 淺色主題（溫暖白，不是死白）----------
+       預設深色；當 <html data-theme="light"> 時，下面這組顏色生效。
+       想調暖白的色溫，改 --bg / --bg-soft 即可。 */
+    [data-theme="light"] {
+      --accent:  #0284c7;         /* 白底上用稍深的青藍，對比才夠 */
+      --accent2: #5b54e0;
+      --text:      #2c2722;       /* 溫暖的深字（帶一點褐，不是冷黑）*/
+      --text-soft: #4f4842;
+      --muted:     #8c8378;
+      --line:      #eadfce;       /* 溫暖的邊框線 */
+      --bg:        #faf6ee;       /* 溫暖白（米白／紙感，不是死白）*/
+      --bg-soft:   #f4ece0;       /* 卡片：稍深一點的暖白 */
+    }
+    [data-theme="light"] body {
+      /* 淺色版：暖白底 + 極淡的暖光暈 */
+      background:
+        radial-gradient(1100px 560px at 50% -8%, rgba(2,132,199,0.06), transparent 70%),
+        radial-gradient(900px 500px at 100% 0%, rgba(234,179,8,0.05), transparent 65%),
+        var(--bg);
+    }
+    [data-theme="light"] nav { background: rgba(250, 246, 238, 0.82); }
 
     * { box-sizing: border-box; }
 
@@ -66,10 +99,23 @@
       flex-wrap: wrap;
       gap: 22px;
       justify-content: center;
+      align-items: center;
       font-size: 15px;
     }
     nav a { color: var(--muted); text-decoration: none; }
     nav a:hover { color: var(--accent); text-decoration: none; opacity: 1; }
+
+    /* 明暗切換按鈕（導覽列）*/
+    .theme-toggle {
+      background: none; border: 1px solid var(--line); border-radius: 8px;
+      width: 32px; height: 32px; cursor: pointer; color: var(--muted);
+      display: inline-flex; align-items: center; justify-content: center; padding: 0;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: var(--bg-soft); }
+    .theme-toggle .icon-moon { display: none; }                              /* 深色時顯示太陽（點了變亮）*/
+    [data-theme="light"] .theme-toggle .icon-sun  { display: none; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: inline-flex; }  /* 淺色時顯示月亮（點了變暗）*/
 
     /* ---------- 共用容器 ---------- */
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
@@ -207,6 +253,10 @@
       <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#education">Education</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="切換明暗主題" title="切換明暗主題">
+        <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
     </div>
   </nav>
 
@@ -412,6 +462,20 @@
   <footer>
     © 2026 Yi-Chieh Wang · Built with plain HTML &amp; CSS · Hosted on GitHub Pages
   </footer>
+
+  <!-- 明暗切換：點按鈕在深/淺之間切換，並記住選擇 -->
+  <script>
+    (function () {
+      var btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var cur = document.documentElement.getAttribute('data-theme');
+        var next = cur === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    })();
+  </script>
 
 </body>
 </html>
