@@ -300,6 +300,7 @@
     <section id="news">
       <h2>News</h2>
       <ul class="news">
+        <li><span class="when">2026</span><span class="what">Built the <b><a href="https://yichieh-wang.github.io/wse_estimator/">WSE-3 Estimator Playground</a></b> — an interactive in-browser cost model for the Cerebras Wafer-Scale Engine (WSE-3).</span></li>
         <li><span class="when">2026</span><span class="what">Serving as <b>Web Chair</b> for <b>EuroSys 2026</b>.</span></li>
         <li><span class="when">2026</span><span class="what">Submitted <b>DLR: Efficient Defect-Tolerant Routing at Wafer Scale</b> to <b>ASPLOS 2026</b>.</span></li>
         <li><span class="when">2026</span><span class="what">Co-authored <b>Wavel</b>, a compilation system for wafer-scale accelerators, submitted to <b>SOSP 2026</b>.</span></li>
@@ -379,6 +380,11 @@
     <section id="projects">
       <h2>Projects</h2>
       <div class="projects">
+        <div class="proj">
+          <h3><a href="https://yichieh-wang.github.io/wse_estimator/">WSE-3 Estimator Playground</a></h3>
+          <p>Interactive all-Rust cost-model playground for the Cerebras Wafer-Scale Engine, compiled to WebAssembly — draw a compute graph, place ops on the wafer, and watch a kernel-level model price latency live. <a href="https://github.com/yichieh-wang/wse_estimator">Source</a>.</p>
+          <div class="tags"><span class="tag">Rust</span><span class="tag">WebAssembly</span><span class="tag">egui</span><span class="tag">Cost Model</span></div>
+        </div>
         <div class="proj">
           <h3>Defect-Tolerant Wafer-Scale Routing (DLR)</h3>
           <p>Defect-aware routing for wafer-scale interconnects, evaluated on two purpose-built NoC simulators in Rust — an event-driven cycle-accurate model (VC flow control, custom arbitration &amp; switch allocation) and a flow-based analytical model for design-space exploration.</p>
